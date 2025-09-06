@@ -1,13 +1,16 @@
-import { router } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Image, ScrollView, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
+  const router = useRouter();
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="font-bold text-lg text-green-500">Prashanttt</Text>
-      <TouchableOpacity onPress={() => router.push("/home")}>
-        <Text>Click me to redirect</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={{ height: '100%' }}>
+          <View>
+            <Image source={require('@/assets/images/Grenoo.png')} style={{width:300,height:300}}/>
+          </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
