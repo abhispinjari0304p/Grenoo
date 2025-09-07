@@ -1,11 +1,58 @@
-import { Homeproducts } from "@/constants/homeProduct";
+import { db } from "@/config/firebaseConfig";
+import { HomeProductType } from "@/constants/homeProduct";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
+import { collection, getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function Home() {
+  const [products, setProducts] = useState<HomeProductType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const querySnapshot = await getDocs(collection(db, "homeProducts"));
+      const fetchedProducts: HomeProductType[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        fetchedProducts.push({
+          id: doc.id,
+          name: data.name,
+          price: data.price,
+          farmer: data.farmer,
+          image: data.image
+        });
+      });
+      setProducts(fetchedProducts);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+      setError("Failed to load products. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const SkeletonCard = () => (
+    <View className="w-[48%] bg-gray-200 rounded-2xl p-3 mb-4 animate-pulse">
+      <View className="w-full h-24 bg-gray-300 rounded-lg mb-3" />
+      <View className="h-4 bg-gray-300 rounded mb-2" />
+      <View className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
+      <View className="h-3 bg-gray-200 rounded w-2/3" />
+    </View>
+  );
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <StatusBar barStyle="light-content" backgroundColor="#2D5128" />
@@ -45,6 +92,10 @@ export default function Home() {
                 resizeMode="cover"
                 style={{ width: '100%', height: 170 }}
               />
+              {/* Wheat Emoji - positioned absolutely at left */}
+              <View className="absolute left-4 top-4">
+                <Text style={{ fontSize: 60 }}>🌾</Text>
+              </View>
               <View className="absolute right-4 top-4 bg-white rounded-2xl px-3 py-3 shadow-md mb-3">
                 <Text className="font-bold text-[#2D5128]">Wheat Seeds</Text>
                 <Text className="text-gray-500 text-xs">By Shree Farm Co.</Text>
@@ -75,29 +126,78 @@ export default function Home() {
         </View>
       </View>
 
+
       {/* Product Grid */}
       <View className="flex-1 px-2">
-        <FlatList
-          data={Homeproducts}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-          showsVerticalScrollIndicator={false}
-          columnWrapperStyle={{ justifyContent: "space-between" }}
-          contentContainerStyle={{ padding: 16 }}
-          renderItem={({ item }) => (
-            <View className="w-[48%] bg-gray-100 rounded-2xl p-3 mb-4">
-              <Image
-                source={item.image}
-                className="w-full h-24 rounded-lg"
-                resizeMode="cover"
-                style={{ width: '100%', height: 96 }}
-              />
-              <Text className="font-semibold mt-2">{item.name}</Text>
-              <Text className="text-green-600">{item.price}</Text>
-              <Text className="text-gray-400 text-sm">{item.farmer}</Text>
-            </View>
-          )}
-        />
+        {/* Product Grid Header */}
+        <View className="flex-row justify-between items-center px-4 mt-3 mb-2">
+          <View>
+            <Text className="text-2xl font-extrabold text-[#2D5128]">
+              Market Price
+            </Text>
+            <Text className="text-sm text-gray-500">
+              Fresh & updated daily 🌱
+            </Text>
+          </View>
+
+          {/* Refresh / Filter Button */}
+          <TouchableOpacity
+            onPress={fetchProducts}
+            className="bg-[#E4EB9C] p-2 rounded-full shadow"
+          >
+            <Ionicons name="refresh" size={20} color="#2D5128" />
+          </TouchableOpacity>
+        </View>
+
+        {loading ? (
+          // Skeleton Loader instead of ActivityIndicator
+          <FlatList
+            data={[1, 2, 3, 4, 5, 6]} // dummy placeholders
+            keyExtractor={(item) => item.toString()}
+            numColumns={2}
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+            contentContainerStyle={{ padding: 16 }}
+            renderItem={() => <SkeletonCard />}
+          />
+        ) : error ? (
+          <View className="flex-1 justify-center items-center px-4">
+            <Text className="text-red-500 text-center mb-4">{error}</Text>
+            <TouchableOpacity
+              onPress={fetchProducts}
+              className="bg-[#2D5128] px-6 py-3 rounded-lg"
+            >
+              <Text className="text-white font-semibold">Retry</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <FlatList
+            data={products}
+            keyExtractor={(item) => item.id}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+            contentContainerStyle={{ padding: 16 }}
+            refreshing={loading}
+            onRefresh={fetchProducts}
+            renderItem={({ item }) => (
+              <View className="w-[48%] bg-gray-100 rounded-2xl p-3 mb-4 shadow-sm">
+                <Image
+                  source={
+                    typeof item.image === "string"
+                      ? { uri: item.image }
+                      : item.image
+                  }
+                  className="w-full h-24 rounded-lg"
+                  resizeMode="cover"
+                  style={{ width: "100%", height: 96 }}
+                />
+                <Text className="font-semibold mt-2">{item.name}</Text>
+                <Text className="text-green-600">{item.price}</Text>
+                <Text className="text-gray-400 text-sm">{item.farmer}</Text>
+              </View>
+            )}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
