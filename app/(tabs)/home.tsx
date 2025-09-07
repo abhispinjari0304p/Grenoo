@@ -1,4 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { router } from "expo-router";
 import { Image, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -7,7 +8,7 @@ export default function Home() {
     <SafeAreaView className="flex-1 bg-white px-6">
       {/* Header */}
       <View className="flex-row justify-between items-center mt-4">
-        <Pressable className="p-3 rounded-full bg-gray-100 justify-center items-center">
+        <Pressable onPress={()=>router.push('/profile')} className="p-3 rounded-full bg-gray-100 justify-center items-center">
           <Ionicons name="person-outline" size={22} color="black" />
         </Pressable>
         <View className="flex-row space-x-3 gap-1">
