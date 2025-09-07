@@ -13,8 +13,8 @@ export default function Home() {
         <View className="px-6">
           {/* Header */}
           <View className="flex-row justify-between items-center mt-4">
-            <Pressable onPress={() => router.push('/profile')} className="p-3 rounded-full bg-[#E4EB9C] justify-center items-center">
-              <Ionicons name="person-outline" size={22} color="#142C14" />
+            <Pressable onPress={() => router.push('/profile')} className=" rounded-full bg-[#E4EB9C] justify-center items-center">
+              <Ionicons name="person-circle" size={40} color="#142C14" />
             </Pressable>
             <View className="flex-row space-x-3 gap-1">
               <Pressable className="w-10 h-10 rounded-full bg-[#E4EB9C] justify-center items-center">
@@ -43,9 +43,9 @@ export default function Home() {
                 source={require("../../assets/images/leaves.jpg")}
                 className="w-full h-44"
                 resizeMode="cover"
-                style={{ width: '100%', height: 160 }}
+                style={{ width: '100%', height: 170 }}
               />
-              <View className="absolute right-4 top-4 bg-white rounded-2xl px-3 py-3 shadow-md">
+              <View className="absolute right-4 top-4 bg-white rounded-2xl px-3 py-3 shadow-md mb-3">
                 <Text className="font-bold text-[#2D5128]">Wheat Seeds</Text>
                 <Text className="text-gray-500 text-xs">By Shree Farm Co.</Text>
                 <View className="h-[1px] bg-gray-200 my-2" />
@@ -86,7 +86,12 @@ export default function Home() {
           contentContainerStyle={{ padding: 16 }}
           renderItem={({ item }) => (
             <View className="w-[48%] bg-gray-100 rounded-2xl p-3 mb-4">
-              <Image source={item.image} className="w-full h-24 rounded-lg" />
+              <Image
+                source={item.image}
+                className="w-full h-24 rounded-lg"
+                resizeMode="cover"
+                style={{ width: '100%', height: 96 }}
+              />
               <Text className="font-semibold mt-2">{item.name}</Text>
               <Text className="text-green-600">{item.price}</Text>
               <Text className="text-gray-400 text-sm">{item.farmer}</Text>
