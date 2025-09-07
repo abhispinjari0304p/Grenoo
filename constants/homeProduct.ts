@@ -39,9 +39,9 @@ export const Homeproducts = [
 ];
 
 export type HomeProductType = {
-  id: number;
+  id: string; // IDs are strings in your array
   name: string;
-  price: string | number;
+  price: string; // all your prices are strings like "₹30/kg"
   farmer: string;
-  image: string | number;
+  image: number | { uri: string }; // local require() = number, URL = {uri: string}
 };
