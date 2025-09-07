@@ -11,7 +11,7 @@ const TabLayout = () => {
             tabBarStyle: {
                 backgroundColor: '#fff',
                 paddingBottom: 14,
-                height: 75
+                height: 75,                
             },
             tabBarLabelStyle: {
                 fontSize: 12,

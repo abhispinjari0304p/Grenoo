@@ -1,7 +1,7 @@
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
-const primary = "#2d5128";
-const secondary = "#142c14";
+const primary = "#537B2F";
+const secondary = "#8DA750";
 export const Colors = {
   light: {
     text: "#11181C",
@@ -21,4 +21,8 @@ export const Colors = {
   },
   PRIMARY: primary,
   SECONDARY: secondary,
+  BACKGROUND: "#E4EB9C", // Mindaro (light background)
+  DARK: "#142C14", // Dark Green
+  CALPOLY: "#2D5128", // Cal Poly Green
+  TEXT: "#2D5128", // dark readable text
 };
