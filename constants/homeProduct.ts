@@ -32,6 +32,16 @@ export const Homeproducts = [
     name: "Fresh Potatoes",
     price: "50/dozen",
     farmer: "Farmer abhishek",
-    image: { uri: "https://img.freepik.com/free-photo/bowl-with-potatoes-table_23-2148540418.jpg" },
+    image: {
+      uri: "https://img.freepik.com/free-photo/bowl-with-potatoes-table_23-2148540418.jpg",
+    },
   },
 ];
+
+export type HomeProductType = {
+  id: number;
+  name: string;
+  price: string | number;
+  farmer: string;
+  image: string | number;
+};
