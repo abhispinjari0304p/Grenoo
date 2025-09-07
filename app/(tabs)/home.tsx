@@ -10,7 +10,7 @@ export default function Home() {
         <Pressable className="p-3 rounded-full bg-gray-100 justify-center items-center">
           <Ionicons name="person-outline" size={22} color="black" />
         </Pressable>
-        <View className="flex-row space-x-4">
+        <View className="flex-row space-x-3 gap-1">
           <Pressable className="w-10 h-10 rounded-full bg-gray-100 justify-center items-center">
             <Ionicons name="notifications-outline" size={22} color="black" />
           </Pressable>
@@ -30,24 +30,29 @@ export default function Home() {
         </Text>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} className="mt-3">
+      <ScrollView showsVerticalScrollIndicator={false} className="mt-">
         {/* Featured Plant Card */}
-      <View className="mt-6">
-        <View className="bg-green-100 rounded-3xl overflow-hidden">
-          <Image
-            source={require("../../assets/images/leaves.jpg")}
-            className="w-full h-40"
-            resizeMode="cover"
-            style={{ width: '100%', height: 160 }}
-          />
-          <View className="absolute right-4 top-4 bg-white rounded-2xl px-4 py-3 shadow-md">
-            <Text className="font-bold text-green-800">Succulent</Text>
-            <Text className="text-gray-500 text-xs">12 days ago planted</Text>
-            <Text className="mt-2 text-sm">🌡 Room temp: 24°C</Text>
-            <Text className="text-sm">💡 Room light: 76%</Text>
+        <View className="mt-6">
+          <View className="bg-green-100 rounded-3xl overflow-hidden">
+            <Image
+              source={require("../../assets/images/leaves.jpg")}
+              className="w-full h-44"
+              resizeMode="cover"
+              style={{ width: '100%', height: 160 }}
+            />
+            <View className="absolute right-4 top-4 bg-white rounded-2xl px-3 py-3 shadow-md">
+              <Text className="font-bold text-green-800">Wheat Seeds</Text>
+              <Text className="text-gray-500 text-xs">By Shree Farm Co.</Text>
+              <View className="h-[1px] bg-gray-200 my-2" />
+              <Text className="text-sm font-semibold text-green-700">₹120/kg</Text>
+              <Text className="text-xs text-gray-500">150kg left</Text>
+
+                <TouchableOpacity className="p-2 rounded-full bg-[#142C13] items-center mt-1">
+                  <Ionicons name="cart-outline" size={18} color="#fff" />
+                </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
 
         {/* Categories */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-5">
