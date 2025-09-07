@@ -30,7 +30,7 @@ export const Homeproducts = [
   {
     id: "5",
     name: "Fresh Potatoes",
-    price: "50/dozen",
+    price: "₹50/kg",
     farmer: "Farmer abhishek",
     image: {
       uri: "https://img.freepik.com/free-photo/bowl-with-potatoes-table_23-2148540418.jpg",
