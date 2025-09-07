@@ -45,7 +45,7 @@ const Signin = () => {
                         className="mb-4"
                     />
                     <Text className="text-4xl font-extrabold text-center text-[#2E481E]">
-                        Welcome to back{" "}
+                        Welcome back{" "}
                     </Text>
                     <Text className="text-gray-500 text-center mt-2 text-base">
                         Let&apos;s get started with new account{" "}
