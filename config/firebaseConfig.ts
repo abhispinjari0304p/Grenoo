@@ -1,0 +1,21 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCCVEMJQgNBA5VjIBsmA2WEArv0VhFrqPU",
+  authDomain: "grenoo.firebaseapp.com",
+  projectId: "grenoo",
+  storageBucket: "grenoo.firebasestorage.app",
+  messagingSenderId: "402945539664",
+  appId: "1:402945539664:web:1b9e0ae264d76f7ac85b55",
+  measurementId: "G-7L9PWH94P3"
+};
+
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);

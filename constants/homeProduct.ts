@@ -27,4 +27,11 @@ export const Homeproducts = [
     farmer: "Farmer Shree",
     image: require("../assets/images/mango.png"),
   },
+  {
+    id: "5",
+    name: "Fresh Potatoes",
+    price: "50/dozen",
+    farmer: "Farmer abhishek",
+    image: { uri: "https://img.freepik.com/free-photo/bowl-with-potatoes-table_23-2148540418.jpg" },
+  },
 ];
