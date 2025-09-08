@@ -37,7 +37,7 @@ const Signin = () => {
             {/* Form Container */}
             <View className="flex-1 -mt-20 bg-white rounded-t-[50px] px-10 pt-8 shadow-lg">
                 {/* Header */}
-                <View className="mb-10 items-center">
+                <View className="mb-5 items-center">
                     <ImageBackground
                         source={require("../../assets/images/Grenoo.png")}
                         style={{ width: 100, height: 100 }}
@@ -53,26 +53,12 @@ const Signin = () => {
                 </View>
 
                 <Formik
-                    initialValues={{ name: '', email: '', password: '' }}
+                    initialValues={{ email: '', password: '' }}
                     validationSchema={validationSchema}
                     onSubmit={handleSignin}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                         <View className="w-full">
-                            <Text className="text-[#142C14] text-base mb-1 font-bold">Name</Text>
-                            <TextInput
-                                onChangeText={handleChange("name")}
-                                onBlur={handleBlur("name")}
-                                className="h-12 border border-gray-300 rounded-lg px-3 mb-1"
-                                value={values.name}
-                            />
-
-                            {touched.name && errors.name &&
-                                (<Text className="text-red-500 text-xs mb-2">
-                                    {errors.name}
-                                </Text>
-                                )
-                            }
                             <Text className="text-[#142C14] text-base mb-1 font-bold">Email</Text>
                             <TextInput
                                 keyboardType="email-address"

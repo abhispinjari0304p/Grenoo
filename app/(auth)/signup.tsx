@@ -1,9 +1,14 @@
+import { auth, db } from "@/config/firebaseConfig";
 import { validationSchema } from "@/utils/authSchema";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { Formik } from "formik";
 import React from "react";
 import {
+    Alert,
     ImageBackground,
     SafeAreaView,
     Text,
@@ -12,11 +17,34 @@ import {
     View
 } from "react-native";
 
+
 const Signup = () => {
     const router = useRouter();
-    const handleSignup = () => {
+    const handleSignup = async (values: { email: string; password: string; name?: string; }) => {
+        try {
+            const userCredentials = await createUserWithEmailAndPassword(
+                auth, values.email, values.password
+            );
+            const user = userCredentials.user;
 
+            await setDoc(doc(db, "users", user.uid), {
+                email: values.email,
+                name: values.name,
+                createdAt: new Date(),
+                userId: user.uid,
+            });
+
+            await AsyncStorage.setItem('userEmail', values.email);
+            await AsyncStorage.setItem('userName', values.name || '');
+            await AsyncStorage.setItem('userId', user.uid);
+            router.push('/home');
+        } catch (error: any) {
+            if (error.code === 'auth/email-already-in-use') {
+                Alert.alert('Sign Up Error', 'The email address is already in use by another account.', [{ text: 'OK' }]);
+            }
+        }
     };
+
 
     return (
         <SafeAreaView className="flex-1 bg-[#E8F5E9]">
@@ -33,9 +61,9 @@ const Signup = () => {
             </ImageBackground>
 
             {/* Form Container */}
-            <View className="flex-1 -mt-20 bg-white rounded-t-[50px] px-10 pt-12 shadow-lg">
+            <View className="flex-1 -mt-20 bg-white rounded-t-[50px] px-10 pt-8 shadow-lg">
                 {/* Header */}
-                <View className="mb-10 items-center">
+                <View className="mb-5 items-center">
                     <ImageBackground
                         source={require("../../assets/images/Grenoo.png")}
                         style={{ width: 100, height: 100 }}
@@ -51,12 +79,26 @@ const Signup = () => {
                 </View>
 
                 <Formik
-                    initialValues={{ email: '', password: '' }}
+                    initialValues={{ name: '', email: '', password: '' }}
                     validationSchema={validationSchema}
                     onSubmit={handleSignup}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                         <View className="w-full">
+                            <Text className="text-[#142C14] text-base mb-1 font-bold">Name</Text>
+                            <TextInput
+                                onChangeText={handleChange("name")}
+                                onBlur={handleBlur("name")}
+                                className="h-12 border border-gray-300 rounded-lg px-3 mb-1"
+                                value={values.name}
+                            />
+
+                            {touched.name && errors.name &&
+                                (<Text className="text-red-500 text-xs mb-2">
+                                    {errors.name}
+                                </Text>
+                                )
+                            }
                             <Text className="text-[#142C14] text-base mb-1 font-bold">Email</Text>
                             <TextInput
                                 keyboardType="email-address"
@@ -82,7 +124,7 @@ const Signup = () => {
                             />
 
                             {touched.password && errors.password &&
-                                (<Text className="text-red-500 text-xs mb-2">
+                                (<Text className="text-red-500 text-xs">
                                     {errors.password}
                                 </Text>
                                 )

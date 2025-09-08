@@ -152,7 +152,7 @@ export default function Home() {
         {loading ? (
           // Skeleton Loader instead of ActivityIndicator
           <FlatList
-            data={[1, 2, 3, 4, 5, 6]} // dummy placeholders
+            data={[1, 2, 3, 4]} // dummy placeholders
             keyExtractor={(item) => item.toString()}
             numColumns={2}
             columnWrapperStyle={{ justifyContent: "space-between" }}
