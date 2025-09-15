@@ -40,7 +40,7 @@ export default function Index() {
                 className="bg-[#4CAF50] rounded-xl py-4 items-center mb-4"
               >
                 <Text style={{ color: "white", fontWeight: "700", fontSize: 18 }}>
-                  Home
+                  Continue as Guest
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity

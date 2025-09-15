@@ -1,9 +1,13 @@
 import { validationSchema } from "@/utils/authSchema";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { auth } from "@/config/firebaseConfig";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import React from "react";
 import {
+    Alert,
     ImageBackground,
     SafeAreaView,
     Text,
@@ -15,8 +19,32 @@ import {
 
 const Signin = () => {
     const router = useRouter();
-    const handleSignin = () => {
+    const handleSignin = async (values: { email: string; password: string }) => {
+        try {
+            const userCredentials = await signInWithEmailAndPassword(
+                auth, values.email, values.password
+            );
+            const user = userCredentials.user;
 
+            await AsyncStorage.setItem('userEmail', values.email);
+            await AsyncStorage.setItem('userId', user.uid);
+            
+            router.push('/(tabs)/home');
+        } catch (error: any) {
+            let errorMessage = 'Sign in failed. Please try again.';
+            
+            if (error.code === 'auth/user-not-found') {
+                errorMessage = 'No account found with this email address.';
+            } else if (error.code === 'auth/wrong-password') {
+                errorMessage = 'Incorrect password. Please try again.';
+            } else if (error.code === 'auth/invalid-email') {
+                errorMessage = 'Invalid email address format.';
+            } else if (error.code === 'auth/user-disabled') {
+                errorMessage = 'This account has been disabled.';
+            }
+            
+            Alert.alert('Sign In Error', errorMessage, [{ text: 'OK' }]);
+        }
     };
 
 
@@ -94,14 +122,14 @@ const Signin = () => {
                                 className="w-full h-14 rounded-full bg-black justify-center items-center shadow-md mt-8"
                                 onPress={() => handleSubmit()}
                             >
-                                <Text className="text-white font-semibold text-xl">Sign Up</Text>
+                                <Text className="text-white font-semibold text-xl">Sign In</Text>
                             </TouchableOpacity>
                         </View>
                     )}
                 </Formik>
                 <View className="mt-2 flex-row justify-center">
                     <Text className="text-gray-600 text-base">
-                        New to Agrimitra?{" "}
+                        New to AgriMitra?{" "}
                     </Text>
                     <TouchableOpacity
                         onPress={() => router.push("/signup")}

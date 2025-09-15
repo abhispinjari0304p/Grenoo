@@ -1,10 +1,11 @@
 import { db } from "@/config/firebaseConfig";
+import { seedDatabase } from "@/config/seedData";
 import { HomeProductType } from "@/constants/homeProduct";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { FlatList, Image, Pressable, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Image, Pressable, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
@@ -42,6 +43,28 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSeedDatabase = async () => {
+    Alert.alert(
+      'Seed Database',
+      'This will add sample data to the database. Continue?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Seed',
+          onPress: async () => {
+            const result = await seedDatabase();
+            if (result.success) {
+              Alert.alert('Success', result.message);
+              fetchProducts(); // Refresh the products
+            } else {
+              Alert.alert('Error', result.message);
+            }
+          }
+        }
+      ]
+    );
   };
 
   const SkeletonCard = () => (
@@ -146,6 +169,14 @@ export default function Home() {
             className="bg-[#E4EB9C] p-2 rounded-full shadow"
           >
             <Ionicons name="refresh" size={20} color="#2D5128" />
+          </TouchableOpacity>
+          
+          {/* Seed Database Button (for development) */}
+          <TouchableOpacity
+            onPress={handleSeedDatabase}
+            className="bg-[#FF9800] p-2 rounded-full shadow ml-2"
+          >
+            <Ionicons name="cloud-upload" size={20} color="white" />
           </TouchableOpacity>
         </View>
 

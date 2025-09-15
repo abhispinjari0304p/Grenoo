@@ -37,7 +37,7 @@ const Signup = () => {
             await AsyncStorage.setItem('userEmail', values.email);
             await AsyncStorage.setItem('userName', values.name || '');
             await AsyncStorage.setItem('userId', user.uid);
-            router.push('/home');
+            router.push('/(tabs)/home');
         } catch (error: any) {
             if (error.code === 'auth/email-already-in-use') {
                 Alert.alert('Sign Up Error', 'The email address is already in use by another account.', [{ text: 'OK' }]);
